@@ -54,6 +54,7 @@ dd {
     font-size: 1.0em;
     line-height: 1.2em;
     color: #333;
+    width: 50%;
 }
 
 ul.posts li {
