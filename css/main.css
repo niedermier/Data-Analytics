@@ -38,6 +38,13 @@ ul.posts {
     font-size: 1.5em;
 }
 
+dd {
+    display: block;
+    margin-left: 40px;
+    font-size: 2em;
+    font-family:'Helvetica', 'Arial', 'Sans-Serif';
+}
+
 ul.posts li {
     list-style: none;
 }
