@@ -1,7 +1,7 @@
 body {
     margin: 60px auto;
     width: 70%;
-    background-color: #9f6060;
+    background-color: #cfccff;
     }
 nav ul, footer ul {
     font-family:'Helvetica', 'Arial', 'Sans-Serif';
@@ -46,7 +46,7 @@ dt {
     margin-left: 40px;
     font-size: 1.6em;
     line-height: 1.9em;
-    color: #333;
+    color: #000000;
     text-decoration: underline;
 }
 
@@ -55,7 +55,7 @@ dd {
     margin-left: 90px;
     font-size: 1.0em;
     line-height: 1.2em;
-    color: #333;
+    color: #000000;
     width: 50%;
 }
 
