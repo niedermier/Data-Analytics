@@ -3,7 +3,7 @@ body {
     width: 70%;
     background-color: #f6f3f3;
     background:  url('/images/beach5.jpg');
-    background-size: 80%;
+    background-size: 100%;
 }
 nav ul, footer ul {
     font-family:'Helvetica', 'Arial', 'Sans-Serif';
