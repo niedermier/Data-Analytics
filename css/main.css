@@ -2,12 +2,15 @@ body {
     margin: 60px auto;
     width: 70%;
     background-color: #f6f3f3;
+    background-image: url(images/beach4.jpg) no-repeat;
+    background-size: 100%;
 }
 nav ul, footer ul {
     font-family:'Helvetica', 'Arial', 'Sans-Serif';
     padding: 0px;
     list-style: none;
     font-weight: bold;
+    color: black;
 }
 nav ul li, footer ul li {
     display: inline;
@@ -32,6 +35,7 @@ p {
 footer {
     border-top: 1px solid #d5d5d5;
     font-size: .8em;
+    color: #999;
 }
 
 ul.posts { 
