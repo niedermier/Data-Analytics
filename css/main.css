@@ -2,7 +2,8 @@ body {
     margin: 60px auto;
     width: 70%;
     background-color: #f6f3f3;
-    background-image: url(images/beach4.jpg) no-repeat;
+    background:  url('/images/beach5.jpg');
+    background-repeat: initial;
     background-size: 100%;
 }
 nav ul, footer ul {
