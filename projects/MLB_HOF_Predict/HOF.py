@@ -125,7 +125,7 @@ print('HR:\n',df_myHOF.HR.describe())
 print('RBI:\n',df_myHOF.RBI.describe())
 print('AllStarStarts:\n',df_myHOF.AllStarStarts.describe())
 print('AllStarGames:\n',df_myHOF.AllStarGames.describe())
-
+df_myHOF.corr().to_excel('data/myHOFCorr.xlsx')
 
 print(df_myHOF.head(5))
 df_myHOF.to_excel('data/myHOF.xlsx')
