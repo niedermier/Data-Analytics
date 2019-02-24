@@ -31,22 +31,54 @@ def round_down(num):
 #----------------------------------------
 #           load HOF data
 #----------------------------------------
-df_HallOfFame = pd.read_excel('data/HallOfFame.xlsx')
-df_HallOfFame = df_HallOfFame[df_HallOfFame.category == 'Player']
-#df_HallOfFame = df_HallOfFame[df_HallOfFame.inducted == 'Y']
-#df_HallOfFame = df_HallOfFame[df_HallOfFame.votedBy == 'BBWAA']
-df_HallOfFame['ElectionDecade'] = df_HallOfFame.apply(lambda x: round_down(x.yearid), axis=1)
+df_HallOfFame_all = pd.read_excel('data/HallOfFame.xlsx')
+df_HallOfFame_all = df_HallOfFame_all[df_HallOfFame_all.category == 'Player']
+df_HallOfFame_all = df_HallOfFame_all[df_HallOfFame_all.votedBy == 'BBWAA']
+df_HallOfFame_all['ElectionDecade'] = df_HallOfFame_all.apply(lambda x: round_down(x.yearid), axis=1)
 
 #--inducted
-#df_HallOfFame_INDUCTED = df_HallOfFame_ALL[df_HallOfFame_ALL.inducted == 'Y']
-#df_HallOfFame_INDUCTED = df_HallOfFame_INDUCTED[df_HallOfFame_INDUCTED.votedBy == 'BBWAA']
+df_HallOfFame_INDUCTED = df_HallOfFame_all[df_HallOfFame_all.inducted == 'Y']
 
 #-not inducted
-#df_No_HallOfFame = df_HallOfFame_ALL[df_HallOfFame_ALL.inducted != 'Y']
+df_No_HallOfFame = df_HallOfFame_all[df_HallOfFame_all.inducted != 'Y']
 
 #--combined list - inducted and not inducted
-#df_Dups = df_No_HallOfFame.merge(df_HallOfFame_INDUCTED, on=['playerID'])
-#print(df_Dups.head(15)) 
+df_Dups = df_No_HallOfFame.merge(df_HallOfFame_INDUCTED, on=['playerID'], how='left')
+#--remove inducted from non inducted df
+df_No_HallOfFame = df_Dups[df_Dups.inducted_y != 'Y']
+
+#--clean up the data
+df_No_HallOfFame.rename(
+    {'ElectionDecade_x': 'ElectionDecade',
+     'inducted_x':'inducted',
+     'ballots_x':'ballots',
+     'needed_x':'needed',
+     'votes_x':'votes',
+     'yearid_x':'yearid',
+     'playerID':'playerID',
+    },
+    axis=1 ,
+    inplace=True
+)
+
+myColumns = ['ElectionDecade','inducted','ballots','needed','votes','yearid','playerID']
+df_No_HallOfFame = df_No_HallOfFame[myColumns].copy()
+
+df_HallOfFame_INDUCTED.rename(
+    {'ElectionDecade_y': 'ElectionDecade',
+     'inducted_y':'inducted',
+     'ballots_y':'ballots',
+     'needed_y':'needed',
+     'votes_y':'votes',
+     'yearid_y':'yearid',
+     'playerID':'playerID',
+    },
+    axis=1 ,
+    inplace=True
+)
+
+df_HallOfFame_INDUCTED = df_HallOfFame_INDUCTED[myColumns].copy()
+df_HallOfFame = pd.concat([df_No_HallOfFame, df_HallOfFame_INDUCTED])
 
 
 #----------------------------------------
@@ -152,40 +184,69 @@ df_myHOF = df_myHOF[myHOFColumns].copy()
 #---------------------------------------
 #           limit dataset
 #---------------------------------------
-df_myHOF = df_myHOF[df_myHOF.yearid >= 1975]
+df_myHOF = df_myHOF[df_myHOF.yearid >= 1970]
 
 df_Decade = df_myHOF.groupby(['ElectionDecade']).agg({'R':'sum','H':'sum','HR':'sum','RBI':'sum','SB':'sum','2B':'sum','3B':'sum','BB':'sum','IBB':'sum','AB':'sum'}).reset_index()
+
+#--Runs
 sns.boxplot(x="ElectionDecade", y="R", palette=["m", "g"], data=df_myHOF, hue="inducted")
 plt.figure()
+g = sns.lmplot(x="yearid", y="R",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#FD031A", "N": "#9A9A7D"})
+plt.figure()
+
+#--Hits
+sns.boxplot(x="ElectionDecade", y="H", palette=["m", "g"], data=df_myHOF, hue="inducted")
+plt.figure()
+g = sns.lmplot(x="yearid", y="H",hue="inducted", data=df_myHOF, markers=["o", "X"], palette={"Y": "#FD031A", "N": "#9A9A7D"})
+               
+#--HR
+plt.figure()
 sns.boxplot(x="ElectionDecade", y="HR", data=df_myHOF, hue="inducted")
-sns.despine(offset=10, trim=True)
+sns.despine(offset=10, trim=True)             
 plt.figure()
-sns.boxplot(x="ElectionDecade", y="AllStarGames", data=df_myHOF, hue="inducted")
-sns.despine(offset=1, trim=True)
+g = sns.lmplot(x="yearid", y="HR",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#FD031A", "N": "#9A9A7D"})
+
+#--RBI
+plt.figure()               
+sns.boxplot(x="ElectionDecade", y="RBI", data=df_myHOF, hue="inducted")
+sns.despine(offset=10, trim=True)             
 plt.figure()
+g = sns.lmplot(x="yearid", y="RBI",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#FD031A", "N": "#9A9A7D"})
+
+#--AllStarStarts
+plt.figure()               
 sns.boxplot(x="ElectionDecade", y="AllStarStarts", data=df_myHOF, hue="inducted")
-sns.despine(offset=1, trim=True)
+sns.despine(offset=10, trim=True)             
 plt.figure()
-#sns.set(color_codes=True)
-#g = sns.lmplot(x="yearid", y="H", hue="inducted", data=df_myHOF, markers=["X", "o"])
-g = sns.lmplot(x="yearid", y="H",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#0A9803", "N": "#EEE688"})
-plt.figure()
-g = sns.lmplot(x="yearid", y="HR",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#0A9803", "N": "#EEE688"})
-plt.figure()
-g = sns.lmplot(x="yearid", y="RBI",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#0A9803", "N": "#EEE688"})
-plt.figure()
-g = sns.lmplot(x="yearid", y="AllStarStarts",hue="inducted", data=df_myHOF,markers=["X", "o"], palette={"Y": "#0A9803", "N": "#EEE688"})
-plt.figure()
-g = sns.lmplot(x="yearid", y="AllStarGames",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#0A9803", "N": "#EEE688"})
-plt.figure()
-g = sns.lmplot(x="yearid", y="GoldGlove",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#0A9803", "N": "#EEE688"})
-plt.figure()
-g = sns.lmplot(x="yearid", y="MVP",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#0A9803", "N": "#EEE688"})
-plt.figure()
-g = sns.lmplot(x="yearid", y="SilverSlugger",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#0A9803", "N": "#EEE688"})
+g = sns.lmplot(x="yearid", y="AllStarStarts",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#FD031A", "N": "#9A9A7D"})
 
+#--AllStarGames
+plt.figure()               
+sns.boxplot(x="ElectionDecade", y="AllStarGames", data=df_myHOF, hue="inducted")
+sns.despine(offset=10, trim=True)             
+plt.figure()
+g = sns.lmplot(x="yearid", y="AllStarGames",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#FD031A", "N": "#9A9A7D"})
 
+#--GoldGlove
+plt.figure()   
+sns.boxplot(x="ElectionDecade", y="GoldGlove", data=df_myHOF, hue="inducted")
+sns.despine(offset=10, trim=True)             
+plt.figure()
+g = sns.lmplot(x="yearid", y="GoldGlove",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#FD031A", "N": "#9A9A7D"})
+               
+#--MVP
+plt.figure()
+sns.boxplot(x="ElectionDecade", y="MVP", data=df_myHOF, hue="inducted")
+sns.despine(offset=10, trim=True)             
+plt.figure()
+g = sns.lmplot(x="yearid", y="MVP",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#FD031A", "N": "#9A9A7D"})
 
+#--SilverSlugger
+plt.figure()
+sns.boxplot(x="ElectionDecade", y="SilverSlugger", data=df_myHOF, hue="inducted")
+sns.despine(offset=10, trim=True)             
+plt.figure()
+g = sns.lmplot(x="yearid", y="SilverSlugger",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#FD031A", "N": "#9A9A7D"})
 
 
 #sns.boxplot(x="H",data=df_myHOF)
