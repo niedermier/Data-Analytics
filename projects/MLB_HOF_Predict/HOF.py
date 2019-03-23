@@ -4,6 +4,18 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import math
 
+def concatName(FirstName, LastName):
+    temp = FirstName + ' ' + LastName
+    print('..........................',temp)
+    return temp
+    
+
+def parseName(NameIn):
+    NameOut, Misc = NameIn.split('(')
+    NameOut.replace("+","")
+    NameOut = NameOut.rstrip()
+    return NameOut
+
 def calc_percentOfVotes(ballots,votes):
     return int(round(votes/ballots*100))
 
@@ -189,65 +201,74 @@ df_myHOF = df_myHOF[df_myHOF.yearid >= 1970]
 df_Decade = df_myHOF.groupby(['ElectionDecade']).agg({'R':'sum','H':'sum','HR':'sum','RBI':'sum','SB':'sum','2B':'sum','3B':'sum','BB':'sum','IBB':'sum','AB':'sum'}).reset_index()
 
 #--Runs
-sns.boxplot(x="ElectionDecade", y="R", palette=["m", "g"], data=df_myHOF, hue="inducted")
-plt.figure()
-g = sns.lmplot(x="yearid", y="R",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#FD031A", "N": "#9A9A7D"})
-plt.figure()
+#sns.boxplot(x="ElectionDecade", y="R", palette=["m", "g"], data=df_myHOF, hue="inducted")
+#plt.figure()
+#g = sns.lmplot(x="yearid", y="R",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#FD031A", "N": "#9A9A7D"})
+#plt.figure()
+#plt.cla()
+
 
 #--Hits
-sns.boxplot(x="ElectionDecade", y="H", palette=["m", "g"], data=df_myHOF, hue="inducted")
-plt.figure()
-g = sns.lmplot(x="yearid", y="H",hue="inducted", data=df_myHOF, markers=["o", "X"], palette={"Y": "#FD031A", "N": "#9A9A7D"})
+#sns.boxplot(x="ElectionDecade", y="H", palette=["m", "g"], data=df_myHOF, hue="inducted")
+#plt.figure()
+#g = sns.lmplot(x="yearid", y="H",hue="inducted", data=df_myHOF, markers=["o", "X"], palette={"Y": "#FD031A", "N": "#9A9A7D"})
+#plt.cla()
                
 #--HR
-plt.figure()
-sns.boxplot(x="ElectionDecade", y="HR", data=df_myHOF, hue="inducted")
-sns.despine(offset=10, trim=True)             
-plt.figure()
-g = sns.lmplot(x="yearid", y="HR",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#FD031A", "N": "#9A9A7D"})
-
+#plt.figure()
+#sns.boxplot(x="ElectionDecade", y="HR", data=df_myHOF, hue="inducted")
+#sns.despine(offset=10, trim=True)             
+#plt.figure()
+#g = sns.lmplot(x="yearid", y="HR",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#FD031A", "N": "#9A9A7D"})
+#plt.cla()
+               
 #--RBI
-plt.figure()               
-sns.boxplot(x="ElectionDecade", y="RBI", data=df_myHOF, hue="inducted")
-sns.despine(offset=10, trim=True)             
-plt.figure()
-g = sns.lmplot(x="yearid", y="RBI",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#FD031A", "N": "#9A9A7D"})
-
+#plt.figure()               
+#sns.boxplot(x="ElectionDecade", y="RBI", data=df_myHOF, hue="inducted")
+#sns.despine(offset=10, trim=True)             
+#plt.figure()
+#g = sns.lmplot(x="yearid", y="RBI",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#FD031A", "N": "#9A9A7D"})
+#plt.cla()
+               
 #--AllStarStarts
-plt.figure()               
-sns.boxplot(x="ElectionDecade", y="AllStarStarts", data=df_myHOF, hue="inducted")
-sns.despine(offset=10, trim=True)             
-plt.figure()
-g = sns.lmplot(x="yearid", y="AllStarStarts",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#FD031A", "N": "#9A9A7D"})
-
+#plt.figure()               
+#sns.boxplot(x="ElectionDecade", y="AllStarStarts", data=df_myHOF, hue="inducted")
+#sns.despine(offset=10, trim=True)             
+#plt.figure()
+#g = sns.lmplot(x="yearid", y="AllStarStarts",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#FD031A", "N": "#9A9A7D"})
+#plt.cla()
+               
 #--AllStarGames
-plt.figure()               
-sns.boxplot(x="ElectionDecade", y="AllStarGames", data=df_myHOF, hue="inducted")
-sns.despine(offset=10, trim=True)             
-plt.figure()
-g = sns.lmplot(x="yearid", y="AllStarGames",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#FD031A", "N": "#9A9A7D"})
-
+#plt.figure()               
+#sns.boxplot(x="ElectionDecade", y="AllStarGames", data=df_myHOF, hue="inducted")
+#sns.despine(offset=10, trim=True)             
+#plt.figure()
+#g = sns.lmplot(x="yearid", y="AllStarGames",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#FD031A", "N": "#9A9A7D"})
+#plt.cla()
+               
 #--GoldGlove
-plt.figure()   
-sns.boxplot(x="ElectionDecade", y="GoldGlove", data=df_myHOF, hue="inducted")
-sns.despine(offset=10, trim=True)             
-plt.figure()
-g = sns.lmplot(x="yearid", y="GoldGlove",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#FD031A", "N": "#9A9A7D"})
+#plt.figure()   
+#sns.boxplot(x="ElectionDecade", y="GoldGlove", data=df_myHOF, hue="inducted")
+#sns.despine(offset=10, trim=True)             
+#plt.figure()
+#g = sns.lmplot(x="yearid", y="GoldGlove",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#FD031A", "N": "#9A9A7D"})
+#plt.cla()
                
 #--MVP
-plt.figure()
-sns.boxplot(x="ElectionDecade", y="MVP", data=df_myHOF, hue="inducted")
-sns.despine(offset=10, trim=True)             
-plt.figure()
-g = sns.lmplot(x="yearid", y="MVP",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#FD031A", "N": "#9A9A7D"})
-
+#plt.figure()
+#sns.boxplot(x="ElectionDecade", y="MVP", data=df_myHOF, hue="inducted")
+#sns.despine(offset=10, trim=True)             
+#plt.figure()
+#g = sns.lmplot(x="yearid", y="MVP",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#FD031A", "N": "#9A9A7D"})
+#plt.cla()
+               
 #--SilverSlugger
-plt.figure()
-sns.boxplot(x="ElectionDecade", y="SilverSlugger", data=df_myHOF, hue="inducted")
-sns.despine(offset=10, trim=True)             
-plt.figure()
-g = sns.lmplot(x="yearid", y="SilverSlugger",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#FD031A", "N": "#9A9A7D"})
-
+#plt.figure()
+#sns.boxplot(x="ElectionDecade", y="SilverSlugger", data=df_myHOF, hue="inducted")
+#sns.despine(offset=10, trim=True)             
+#plt.figure()
+#g = sns.lmplot(x="yearid", y="SilverSlugger",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#FD031A", "N": "#9A9A7D"})
+#plt.cla()
 
 #sns.boxplot(x="H",data=df_myHOF)
 print('H:\n',df_myHOF.H.describe())
@@ -267,5 +288,34 @@ df_Decade.to_excel('data/myHOF.xlsx')
 
 
 
+#----------------------------------------
+#           load WAR data
+#----------------------------------------
+df_WAR = pd.read_excel('data/CareerWAR.xlsx')
+df_WAR['FullName']= df_WAR.apply(lambda x: parseName(x.NameAndYears), axis=1)
+#df_WAR['Career_WAR'] = df_WAR['Career_WAR'].fillna(0)
+df_myHOF['FullName'] = df_myHOF.apply(lambda x: concatName(x.nameFirst, x.nameLast), axis=1)
+df_myHOF = df_myHOF.merge(df_WAR, on=["FullName"], how='left')
+
+df_Decade = df_myHOF.groupby(['ElectionDecade']).agg({'R':'sum','H':'sum','HR':'sum','RBI':'sum','SB':'sum','2B':'sum','3B':'sum','BB':'sum','IBB':'sum','AB':'sum','Career_WAR':'sum'}).reset_index()
+
+
+print(df_myHOF.head(100))
+
+plt.close('all')
+
+#--WAR
+print('1')
+plt.figure()
+print('2')
+sns.boxplot(x="ElectionDecade", y="Career_WAR", data=df_myHOF, hue="inducted")
+print('3')
+sns.despine(offset=10, trim=True)             
+print('4')
+plt.figure()
+print('5')
+#g = sns.lmplot(x="yearid", y="Career_WAR",hue="inducted", data=df_myHOF, markers=["X", "o"], palette={"Y": "#FD031A", "N": "#9A9A7D"})
+
+df_myHOF.to_excel('data/myHOF.xlsx')
 print('----- ALL DONE -----')
 
