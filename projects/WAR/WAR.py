@@ -5,7 +5,10 @@ def findHOF(myVal):
         return 1
     else:
         return 0
-    
+
+def findBallotYear(myVal):
+    return myVal
+   
 def findName(myVal):
     temp = myVal.split("(")
     return temp[0].rstrip()
@@ -78,6 +81,7 @@ myData['HOF'] = myData.apply(lambda row: findHOF(row['Name_WAR']),axis=1)
 myData['FullName'] = myData.apply(lambda row: findName(row['Name_WAR']),axis=1)
 myData['Seasons'] = myData.apply(lambda row: findSeasons(row['Name_WAR']),axis=1)
 myData['Age'] = myData.apply(lambda row: findAge(row['Name_WAR']),axis=1)
+myData['BallotYear'] = myData.apply(lambda row: findBallotYear(row['Current_Ballot']),axis=1)
 myData['WARPerSeason'] = myData.apply(lambda row: calcWARPerSeason(row['WAR'],row['Seasons']),axis=1)
 myDisplay = myData.sort_values(by=['WARPerSeason'], ascending=False)
 myDisplay = myDisplay[['FullName', 'Seasons', 'Age', 'WAR','WARPerSeason','HOF']]
@@ -103,11 +107,13 @@ myCurious = myCurious[myCurious.WAR >= 60]
 myCurious = myCurious.sort_values(by=['WARPerSeason'], ascending=False)
 #print(myCurious.head(100))
 
+print('1.........................')
+
 #--bad HOF choices
-badHOF = myData[myData.HOF == 1]
+#badHOF = myData[myData.HOF == 1]
 #badHOF = badHOF[badHOF.WarPerSeason < 60]
-badHOF = badHOF.sort_values(by=['WAR'], ascending=True)
-badHOF = badHOF[['FullName', 'Seasons', 'Age', 'WAR','WARPerSeason']] 
+#badHOF = badHOF.sort_values(by=['WAR'], ascending=True)
+#badHOF = badHOF[['FullName', 'Seasons', 'Age', 'WAR','WARPerSeason']] 
 #print(badHOF.head(10))
 
 #--active players
@@ -118,6 +124,6 @@ myActivePlayers = myActivePlayers.sort_values(by=['WARPerSeason'], ascending=Fal
 #myActivePlayers = myActivePlayers.sort_values(by=['WARRemaining'], ascending=True)
 OnTrackForHOF = myActivePlayers[myActivePlayers.ProjectedWAR >= 20]
 OnTrackForHOF = OnTrackForHOF[['FullName', 'WAR','WARPerSeason','WARPerYear_ComparedToHOF','WAR_ComparedToHOF']] 
-print(OnTrackForHOF.head(70))
+#print(OnTrackForHOF.head(70))
 
 myData.to_excel('myWAR-Output.xlsx')
